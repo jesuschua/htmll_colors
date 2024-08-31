@@ -18,10 +18,25 @@ const colors = [
 
 const container = document.getElementById('color-container');
 
+function getContrastingColor(color) {
+    const tempElement = document.createElement('div');
+    tempElement.style.backgroundColor = color;
+    document.body.appendChild(tempElement);
+    const rgb = window.getComputedStyle(tempElement).backgroundColor.match(/\d+/g).map(Number);
+    document.body.removeChild(tempElement);
+
+    // Calculate luminance
+    const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+
+    // Return black for light colors and white for dark colors
+    return luminance > 0.5 ? 'black' : 'white';
+}
+
 colors.forEach(color => {
     const swatch = document.createElement('div');
     swatch.className = 'color-swatch';
     swatch.style.backgroundColor = color;
     swatch.textContent = color;
+    swatch.style.color = getContrastingColor(color);
     container.appendChild(swatch);
 });
