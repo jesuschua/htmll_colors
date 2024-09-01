@@ -31,4 +31,37 @@ body {
 #color-name {
     font-size: 36px;
     margin: 20px 0;
-}   
+}
+
+#challenge-level {
+    font-size: 36px;
+    margin: 20px 0;
+}
+
+#previous-button {
+    margin: 30px 0;
+    padding: 10px 20px;
+    /* background-color: #007bff; */
+    /* color: #fff; */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#previous-button:hover {
+    background-color: #0056b3;
+}
+
+#next-button {
+    margin: 30px 0;
+    padding: 10px 20px;
+    /* background-color: #007bff; */
+    /* color: #fff; */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#next-button:hover {
+    background-color: #0056b3;
+}

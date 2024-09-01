@@ -148,17 +148,32 @@ function assemble_3_colors(level) {
     });
 }
 
+function set_game_level(level) {
+    const levelElement = document.getElementById('challenge-level');
+    levelElement.textContent = "Challenge level: " + level;
+    assemble_3_colors(level).then(colors => {
+        message = "Choose the color that is closest to the center color";
+        console.log('Retrieved colors:', colors);
+        // Choose random color from the array
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        console.log('Random color:', randomColor);
+        // set the color-name div to the name of the color
+        document.getElementById('color-name').textContent = randomColor;
+    });
+}
 
-// Example of how to call the function and get the colors as an output
-assemble_3_colors(5).then(colors => {
-    console.log('Retrieved colors:', colors);
-    // Choose random color from the array
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    console.log('Random color:', randomColor);
-    // set the color-name div to the name of the color
-    document.getElementById('color-name').textContent = randomColor;
+function nextLevel () {
+    // clear the color container
+    container.innerHTML = '';
+    const levelElement = document.getElementById('challenge-level');
+    const level = parseInt(levelElement.textContent.split(' ')[2]);
+    set_game_level(level + 1);
+}
 
-});
-
+function resetLevel () {
+    // clear the color container
+    container.innerHTML = '';
+    set_game_level(1);
+}
 
 
