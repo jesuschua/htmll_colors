@@ -112,8 +112,8 @@ function assemble_3_colors(level) {
 
         promises = [
             getColor('red', red_num),
-            getColor('red', green_num),
-            getColor('red', blue_num)
+            getColor('green', green_num),
+            getColor('blue', blue_num)
         ];
     }
 
@@ -123,13 +123,25 @@ function assemble_3_colors(level) {
         const blue_num = generate_rand_num(51, 100);
 
         promises = [
-            getColor('green', red_num),
+            getColor('red', red_num),
             getColor('green', green_num),
-            getColor('green', blue_num)
+            getColor('blue', blue_num)
         ];
     }
 
     if (level === 5) {
+        const red_num = generate_rand_num(100, 140);
+        const green_num = generate_rand_num(100, 140);
+        const blue_num = generate_rand_num(100, 140);
+
+        promises = [
+            getColor('red', red_num),
+            getColor('green', green_num),
+            getColor('blue', blue_num)
+        ];
+    }
+
+    if (level === 6) {
         const red_num = generate_rand_num(100, 140);
         const green_num = generate_rand_num(100, 140);
         const blue_num = generate_rand_num(100, 140);
@@ -141,6 +153,48 @@ function assemble_3_colors(level) {
         ];
     }
 
+    if (level === 7) {
+        const red_num = generate_rand_num(100, 105);
+        const green_num = generate_rand_num(100, 105);
+        const blue_num = generate_rand_num(100, 105);
+
+        promises = [
+            getColor('red', red_num),
+            getColor('red', green_num),
+            getColor('red', blue_num)
+        ];
+    }
+
+    if (level === 8) {
+        const num = generate_rand_num(10, 15);
+
+        promises = [
+            getColor('green', num),
+            getColor('green', num + 1),
+            getColor('green', num + 2)
+        ];
+    }
+
+    if (level === 9) {
+        const num = generate_rand_num(10, 15);
+
+        promises = [
+            getColor('blue', num),
+            getColor('blue', num + 1),
+            getColor('blue', num + 2)
+        ];
+    }
+
+    if (level === 10) {
+        const num = generate_rand_num(10, 15);
+
+        promises = [
+            getColor('red', num),
+            getColor('red', num + 1),
+            getColor('red', num + 2)
+        ];
+    }
+
     // Return a promise that resolves with the three colors
     return Promise.all(promises).then(colorDataArray => {
         return colorDataArray; // Return the array of color data objects
@@ -148,9 +202,14 @@ function assemble_3_colors(level) {
 }
 
 function set_game_level(level) {
-    if (level > 5) {
+    if (level > 10) {
         alert('You have completed the game!');
-        // resetLevel();
+        // add a button to restart the game
+        const restartButton = document.createElement('button');
+        restartButton.textContent = 'Restart Game';
+        restartButton.addEventListener('click', resetLevel);
+        document.body.appendChild(restartButton);
+        
         return;
     }
 
@@ -175,9 +234,9 @@ function set_game_level(level) {
         swatchElements.forEach((swatch, index) => {
             swatch.addEventListener('click', function() {
                 if (colors[index] === randomColor) {
-                    incrementScore();
                     nextLevel();
                 } else {
+                    alert('Incorrect! Restarting level...');
                     resetLevel();
                 }
             });
@@ -199,14 +258,6 @@ function resetLevel () {
     const levelElement = document.getElementById('challenge-level');
     levelElement.textContent = "Challenge level: " + 1;
     set_game_level(1);
-    let score = 0;
-}
-
-let score = 0;
-
-function incrementScore() {
-    score += 1;
-    document.getElementById('score').textContent = "Score: " + score;
 }
 
 
