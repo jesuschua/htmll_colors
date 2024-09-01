@@ -1,0 +1,164 @@
+const container = document.getElementById('color-container');
+// import json_file from './sorted_via_absolute_red.json';
+
+function loadJSON(callback, color_family) {   
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    var filename = './sorted_via_absolute_'+ color_family +'.json';
+    // console.log(filename);
+    xobj.open('GET', filename, true); 
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+          }
+    };
+    xobj.send(null);  
+ }
+
+function get_color_from_red(num, callback) {
+loadJSON(function(response) {
+    var actual_JSON = JSON.parse(response);
+    var color = actual_JSON[num];
+    callback(color);
+}, 'red');
+}
+
+function get_color_from_green(num, callback) {
+    loadJSON(function(response) {
+        var actual_JSON = JSON.parse(response);
+        var color = actual_JSON[num];
+        callback(color);
+    }, 'green');
+}
+
+function get_color_from_blue(num, callback) {
+    loadJSON(function(response) {
+        var actual_JSON = JSON.parse(response);
+        var color = actual_JSON[num];
+        callback(color);
+    }, 'blue');
+}
+
+function generate_rand_num(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function assemble_3_colors(level) {
+    const getColor = (colorFamily, num) => {
+        return new Promise((resolve, reject) => {
+            if (colorFamily === 'red') {
+                get_color_from_red(num, function(color) {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    swatch.style.backgroundColor = color[0];
+                    swatch.textContent = color.name;
+                    swatch.style.color = 'black';
+                    container.appendChild(swatch);
+                    resolve(color[0]); // Resolve with the color value
+                });
+            } else if (colorFamily === 'green') {
+                get_color_from_green(num, function(color) {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    swatch.style.backgroundColor = color[0];
+                    swatch.textContent = color.name;
+                    swatch.style.color = 'black';
+                    container.appendChild(swatch);
+                    resolve(color[0]); // Resolve with the color value
+                });
+            } else if (colorFamily === 'blue') {
+                get_color_from_blue(num, function(color) {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    swatch.style.backgroundColor = color[0];
+                    swatch.textContent = color.name;
+                    swatch.style.color = 'black';
+                    container.appendChild(swatch);
+                    resolve(color[0]); // Resolve with the color value
+                });
+            } else {
+                reject(new Error('Invalid color family'));
+            }
+        });
+    };
+
+    let promises = [];
+
+    if (level === 1) {
+        promises = [
+            getColor('red', 0),
+            getColor('green', 0),
+            getColor('blue', 0)
+        ];
+    }
+
+    if (level === 2) {
+        const red_num = generate_rand_num(1, 20);
+        const green_num = generate_rand_num(1, 20);
+        const blue_num = generate_rand_num(1, 20);
+
+        promises = [
+            getColor('red', red_num),
+            getColor('green', green_num),
+            getColor('blue', blue_num)
+        ];
+    }
+
+    if (level === 3) {
+        const red_num = generate_rand_num(21, 50);
+        const green_num = generate_rand_num(21, 50);
+        const blue_num = generate_rand_num(21, 50);
+
+        promises = [
+            getColor('red', red_num),
+            getColor('red', green_num),
+            getColor('red', blue_num)
+        ];
+    }
+
+    if (level === 4) {
+        const red_num = generate_rand_num(51, 100);
+        const green_num = generate_rand_num(51, 100);
+        const blue_num = generate_rand_num(51, 100);
+
+        promises = [
+            getColor('green', red_num),
+            getColor('green', green_num),
+            getColor('green', blue_num)
+        ];
+    }
+
+    if (level === 5) {
+        const red_num = generate_rand_num(100, 140);
+        const green_num = generate_rand_num(100, 140);
+        const blue_num = generate_rand_num(100, 140);
+
+        promises = [
+            getColor('blue', red_num),
+            getColor('blue', green_num),
+            getColor('blue', blue_num)
+        ];
+    }
+
+    // Return a promise that resolves with the three colors
+    return Promise.all(promises).then(colors => {
+        // console.log('All colors loaded:', colors);
+        return colors; // Return the array of colors
+    });
+}
+
+
+// Example of how to call the function and get the colors as an output
+assemble_3_colors(5).then(colors => {
+    console.log('Retrieved colors:', colors);
+    // Choose random color from the array
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    console.log('Random color:', randomColor);
+    // set the color-name div to the name of the color
+    document.getElementById('color-name').textContent = randomColor;
+
+});
+
+
+

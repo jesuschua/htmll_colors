@@ -2,6 +2,7 @@ from colormath.color_objects import LabColor, sRGBColor
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 import matplotlib.pyplot as plt
+import json
 
 # For some reason, this workaround got rid of the error
 import numpy
@@ -214,7 +215,7 @@ sorted_colors_from_rgb_center = sorted(color_distances_from_rgb_center.items(), 
 names, distances = zip(*sorted_colors_from_rgb_center)
 colors = [html_colors[name] for name in names]
 
-print(sorted_colors_from_rgb_center)
+# print(sorted_colors_from_rgb_center)
 
 absolute_red = (255, 0, 0)
 
@@ -229,8 +230,8 @@ sorted_colors_from_absolute_red = sorted(color_distances_from_absolute_red.items
 
 names, distances = zip(*sorted_colors_from_absolute_red)
 colors = [html_colors[name] for name in names]
-print("__________ABSOLUTE RED__________")
-print(sorted_colors_from_absolute_red)
+# print("__________ABSOLUTE RED__________")
+# print(sorted_colors_from_absolute_red)
 
 absolute_green = (0, 255, 0)
 
@@ -245,8 +246,8 @@ sorted_colors_from_absolute_green = sorted(color_distances_from_absolute_green.i
 
 names, distances = zip(*sorted_colors_from_absolute_green)
 colors = [html_colors[name] for name in names]
-print("__________ABSOLUTE GREEN__________")
-print(sorted_colors_from_absolute_green)
+# print("__________ABSOLUTE GREEN__________")
+# print(sorted_colors_from_absolute_green)
 
 absolute_blue = (0, 0, 255)
 
@@ -262,9 +263,21 @@ sorted_colors_from_absolute_blue = sorted(color_distances_from_absolute_blue.ite
 
 names, distances = zip(*sorted_colors_from_absolute_blue)
 colors = [html_colors[name] for name in names]
-print("__________ABSOLUTE BLUE__________")
+# print("__________ABSOLUTE BLUE__________")
+# print(sorted_colors_from_absolute_blue)
 
-print(sorted_colors_from_absolute_blue)
+# app\color_lists
+with open('app\color_lists\sorted_via_rgb_center.json', 'w') as f:
+    json.dump(sorted_colors_from_rgb_center, f)
+
+with open('app\color_lists\sorted_via_absolute_red.json', 'w') as f:
+    json.dump(sorted_colors_from_absolute_red, f)
+
+with open('app\color_lists\sorted_via_absolute_green.json', 'w') as f:
+    json.dump(sorted_colors_from_absolute_green, f)
+
+with open('app\color_lists\sorted_via_absolute_blue.json', 'w') as f:
+    json.dump(sorted_colors_from_absolute_blue, f)
 
 # fig, ax = plt.subplots(figsize=(20, 5))
 
@@ -292,24 +305,24 @@ green_family_color = sorted_colors_from_absolute_green[rand_num][0]
 rand_num = np.random.randint(min_num, max_num)
 blue_family_color = sorted_colors_from_absolute_blue[rand_num][0]
 
-# create a plot of the colors from the red, green, and blue families
-fig, ax = plt.subplots(figsize=(20, 5))
+# # create a plot of the colors from the red, green, and blue families
+# fig, ax = plt.subplots(figsize=(20, 5))
 
-colors = [red_family_color, green_family_color, blue_family_color]
+# colors = [red_family_color, green_family_color, blue_family_color]
 
-left = 0
-for color in colors:
-    ax.barh(0, 1, left=left, color=np.array(html_colors[color]) / 255, height=1, edgecolor='none')
-    left += 1
+# left = 0
+# for color in colors:
+#     ax.barh(0, 1, left=left, color=np.array(html_colors[color]) / 255, height=1, edgecolor='none')
+#     left += 1
 
-ax.axis('off')
-# choose randomly between the colors from the three families
+# ax.axis('off')
+# # choose randomly between the colors from the three families
 
-name = np.random.choice(colors)
+# name = np.random.choice(colors)
 
-plt.title(name)
-plt.tight_layout()
-plt.show()
+# plt.title(name)
+# plt.tight_layout()
+# plt.show()
 
 
 
