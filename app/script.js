@@ -195,6 +195,14 @@ function assemble_3_colors(level) {
         ];
     }
 
+    // Ensure that non of the colors are the same
+    const colors = promises.map(promise => promise.then(data => data.color));
+    Promise.all(colors).then(colorValues => {
+        if (colorValues[0] === colorValues[1] || colorValues[0] === colorValues[2] || colorValues[1] === colorValues[2]) {
+            return assemble_3_colors(level); // Recursively call this function until the colors are unique
+        }
+    });
+
     // Return a promise that resolves with the three colors
     return Promise.all(promises).then(colorDataArray => {
         return colorDataArray; // Return the array of color data objects
