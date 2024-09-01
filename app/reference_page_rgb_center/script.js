@@ -55,7 +55,7 @@ function assemble_3_colors(level) {
                     swatch.textContent = color.name;
                     swatch.style.color = 'black';
                     container.appendChild(swatch);
-                    resolve(color[0]); // Resolve with the color value
+                    resolve({ color: color[0], element: swatch }); // Resolve with the color value and the swatch element
                 });
             } else if (colorFamily === 'green') {
                 get_color_from_green(num, function(color) {
@@ -65,7 +65,7 @@ function assemble_3_colors(level) {
                     swatch.textContent = color.name;
                     swatch.style.color = 'black';
                     container.appendChild(swatch);
-                    resolve(color[0]); // Resolve with the color value
+                    resolve({ color: color[0], element: swatch }); // Resolve with the color value and the swatch element
                 });
             } else if (colorFamily === 'blue') {
                 get_color_from_blue(num, function(color) {
@@ -75,7 +75,7 @@ function assemble_3_colors(level) {
                     swatch.textContent = color.name;
                     swatch.style.color = 'black';
                     container.appendChild(swatch);
-                    resolve(color[0]); // Resolve with the color value
+                    resolve({ color: color[0], element: swatch }); // Resolve with the color value and the swatch element
                 });
             } else {
                 reject(new Error('Invalid color family'));
@@ -142,23 +142,46 @@ function assemble_3_colors(level) {
     }
 
     // Return a promise that resolves with the three colors
-    return Promise.all(promises).then(colors => {
-        // console.log('All colors loaded:', colors);
-        return colors; // Return the array of colors
+    return Promise.all(promises).then(colorDataArray => {
+        return colorDataArray; // Return the array of color data objects
     });
 }
 
 function set_game_level(level) {
+    if (level > 5) {
+        alert('You have completed the game!');
+        // resetLevel();
+        return;
+    }
+
     const levelElement = document.getElementById('challenge-level');
     levelElement.textContent = "Challenge level: " + level;
-    assemble_3_colors(level).then(colors => {
+
+    assemble_3_colors(level).then(colorDataArray => {
+        const colors = colorDataArray.map(data => data.color);
+        const swatchElements = colorDataArray.map(data => data.element);
+
         message = "Choose the color that is closest to the center color";
         console.log('Retrieved colors:', colors);
+        
         // Choose random color from the array
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         console.log('Random color:', randomColor);
-        // set the color-name div to the name of the color
+        
+        // Set the color-name div to the name of the color
         document.getElementById('color-name').textContent = randomColor;
+
+        // Add click event listeners to the swatches
+        swatchElements.forEach((swatch, index) => {
+            swatch.addEventListener('click', function() {
+                if (colors[index] === randomColor) {
+                    incrementScore();
+                    nextLevel();
+                } else {
+                    resetLevel();
+                }
+            });
+        });
     });
 }
 
@@ -173,7 +196,17 @@ function nextLevel () {
 function resetLevel () {
     // clear the color container
     container.innerHTML = '';
+    const levelElement = document.getElementById('challenge-level');
+    levelElement.textContent = "Challenge level: " + 1;
     set_game_level(1);
+    let score = 0;
+}
+
+let score = 0;
+
+function incrementScore() {
+    score += 1;
+    document.getElementById('score').textContent = "Score: " + score;
 }
 
 
