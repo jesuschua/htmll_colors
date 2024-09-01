@@ -168,7 +168,7 @@ def color_difference(color1, color2):
 
 ######################################################################
 
-# # Create 3d graph of the colors in rgb space
+# Create 3d graph of the colors in rgb space
 
 # from mpl_toolkits.mplot3d import Axes3D
 
@@ -184,30 +184,132 @@ def color_difference(color1, color2):
 
 # plt.show()
 
-# Create a graph of the colors in CIELAB space
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+######################################################################
 
-for color, rgb in html_colors.items():
+# Find the center of the RGB space
+
+import numpy as np
+
+rgb_values = np.array(list(html_colors.values()))
+rgb_center = np.mean(rgb_values, axis=0)
+
+print(rgb_center)
+
+# Show the color of the center as a color swatch
+# plt.imshow([[rgb_center / 255]])
+# plt.axis('off')
+# plt.show()
+
+# create a color graph of the named colors based on their distance from the center
+lab_center = rgb_to_lab(*rgb_center)
+
+color_distances_from_rgb_center = {}
+for name, rgb in html_colors.items():
     lab = rgb_to_lab(*rgb)
-    ax.scatter(lab.lab_l, lab.lab_a, lab.lab_b, color=color)
+    distance = color_difference(lab_center, lab)
+    color_distances_from_rgb_center[name] = distance
 
-ax.set_xlabel('L')
-ax.set_ylabel('a')
-ax.set_zlabel('b')
+sorted_colors_from_rgb_center = sorted(color_distances_from_rgb_center.items(), key=lambda x: x[1])
 
+names, distances = zip(*sorted_colors_from_rgb_center)
+colors = [html_colors[name] for name in names]
+
+print(sorted_colors_from_rgb_center)
+
+absolute_red = (255, 0, 0)
+
+color_distances_from_absolute_red = {}
+lab_absolute_red = rgb_to_lab(*absolute_red)
+for name, rgb in html_colors.items():
+    lab = rgb_to_lab(*rgb)
+    distance = color_difference(lab_absolute_red, lab)
+    color_distances_from_absolute_red[name] = distance
+
+sorted_colors_from_absolute_red = sorted(color_distances_from_absolute_red.items(), key=lambda x: x[1])
+
+names, distances = zip(*sorted_colors_from_absolute_red)
+colors = [html_colors[name] for name in names]
+print("__________ABSOLUTE RED__________")
+print(sorted_colors_from_absolute_red)
+
+absolute_green = (0, 255, 0)
+
+color_distances_from_absolute_green = {}
+lab_absolute_green = rgb_to_lab(*absolute_green)
+for name, rgb in html_colors.items():
+    lab = rgb_to_lab(*rgb)
+    distance = color_difference(lab_absolute_green, lab)
+    color_distances_from_absolute_green[name] = distance
+
+sorted_colors_from_absolute_green = sorted(color_distances_from_absolute_green.items(), key=lambda x: x[1])
+
+names, distances = zip(*sorted_colors_from_absolute_green)
+colors = [html_colors[name] for name in names]
+print("__________ABSOLUTE GREEN__________")
+print(sorted_colors_from_absolute_green)
+
+absolute_blue = (0, 0, 255)
+
+color_distances_from_absolute_blue = {}
+lab_absolute_blue = rgb_to_lab(*absolute_blue)
+
+for name, rgb in html_colors.items():
+    lab = rgb_to_lab(*rgb)
+    distance = color_difference(lab_absolute_blue, lab)
+    color_distances_from_absolute_blue[name] = distance
+
+sorted_colors_from_absolute_blue = sorted(color_distances_from_absolute_blue.items(), key=lambda x: x[1])
+
+names, distances = zip(*sorted_colors_from_absolute_blue)
+colors = [html_colors[name] for name in names]
+print("__________ABSOLUTE BLUE__________")
+
+print(sorted_colors_from_absolute_blue)
+
+# fig, ax = plt.subplots(figsize=(20, 5))
+
+# left = 0
+# for name, distance, color in zip(names, distances, colors):
+#     ax.barh(0, distance, left=left, color=np.array(color) / 255, height=1, edgecolor='none')
+#     left += distance
+
+# ax.axis('off')
+# plt.title('HTML Named Colors: Distance from RGB Center')
+# plt.tight_layout()
+# plt.show()
+
+# second_level_challenge
+
+min_num = 20
+max_num = 50
+
+rand_num = np.random.randint(min_num, max_num)
+red_family_color = sorted_colors_from_absolute_red[rand_num][0]
+
+rand_num = np.random.randint(min_num, max_num)
+green_family_color = sorted_colors_from_absolute_green[rand_num][0]
+
+rand_num = np.random.randint(min_num, max_num)
+blue_family_color = sorted_colors_from_absolute_blue[rand_num][0]
+
+# create a plot of the colors from the red, green, and blue families
+fig, ax = plt.subplots(figsize=(20, 5))
+
+colors = [red_family_color, green_family_color, blue_family_color]
+
+left = 0
+for color in colors:
+    ax.barh(0, 1, left=left, color=np.array(html_colors[color]) / 255, height=1, edgecolor='none')
+    left += 1
+
+ax.axis('off')
+# choose randomly between the colors from the three families
+
+name = np.random.choice(colors)
+
+plt.title(name)
+plt.tight_layout()
 plt.show()
 
 
 
-
-# # Example usage
-# white = rgb_to_lab(255, 255, 255)
-# black = rgb_to_lab(0, 0, 0)
-# red = rgb_to_lab(255, 0, 0)
-# salmon = rgb_to_lab(250, 128, 114)
-# pink = rgb_to_lab(255, 192, 203)
-# peach = rgb_to_lab(255, 218, 185)
-
-# print(color_difference(white, black))  # Large difference
-# print(color_difference(salmon, pink))  # Smaller difference
