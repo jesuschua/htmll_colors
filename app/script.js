@@ -204,12 +204,7 @@ function assemble_3_colors(level) {
 function set_game_level(level) {
     if (level > 10) {
         alert('You have completed the game!');
-        // add a button to restart the game
-        const restartButton = document.createElement('button');
-        restartButton.textContent = 'Restart Game';
-        restartButton.addEventListener('click', resetLevel);
-        document.body.appendChild(restartButton);
-        
+        document.getElementById('color-name').textContent = 'Thanks for playing! Refresh to start again.';        
         return;
     }
 
