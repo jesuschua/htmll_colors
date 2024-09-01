@@ -171,25 +171,28 @@ def color_difference(color1, color2):
 
 # Create 3d graph of the colors in rgb space
 
-# from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
 
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
+for color, rgb in html_colors.items():
+    ax.scatter(rgb[0], rgb[1], rgb[2], color=color)
 
-# for color, rgb in html_colors.items():
-#     ax.scatter(rgb[0], rgb[1], rgb[2], color=color)
+ax.set_xlabel('Red')
+ax.set_ylabel('Green')
+ax.set_zlabel('Blue')
 
-# ax.set_xlabel('Red')
-# ax.set_ylabel('Green')
-# ax.set_zlabel('Blue')
+ax.set_title('Cast of characters')
 
-# plt.show()
+ax.view_init(elev=45, azim=-45)  # Adjust the elevation and azimuth angles
+
+plt.show()
 
 ######################################################################
 
 # Find the center of the RGB space
 
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
 
 rgb_values = np.array(list(html_colors.values()))
 rgb_center = np.mean(rgb_values, axis=0)

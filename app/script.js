@@ -204,7 +204,12 @@ function assemble_3_colors(level) {
 function set_game_level(level) {
     if (level > 10) {
         alert('You have completed the game!');
-        document.getElementById('color-name').textContent = 'Thanks for playing! Refresh to start again.';        
+        document.getElementById('color-name').textContent = 'Thanks for playing! Refresh to start again.';
+        //Show an image of the color wheel
+        const img = document.createElement('img');
+        img.src = './images/colors_3d_graph.png';
+        img.style.width = '100%';
+        container.appendChild(img);        
         return;
     }
 
