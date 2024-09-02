@@ -44,7 +44,7 @@ function generate_rand_num(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function assemble_3_colors(level) {
+function assemble_colors(level) {
     const getColor = (colorFamily, num) => {
         return new Promise((resolve, reject) => {
             if (colorFamily === 'red') {
@@ -216,7 +216,7 @@ function set_game_level(level) {
     const levelElement = document.getElementById('challenge-level');
     levelElement.textContent = "Challenge level: " + level;
 
-    assemble_3_colors(level).then(colorDataArray => {
+    assemble_colors(level).then(colorDataArray => {
         const colors = colorDataArray.map(data => data.color);
         const swatchElements = colorDataArray.map(data => data.element);
 
