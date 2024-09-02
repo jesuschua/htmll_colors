@@ -94,9 +94,9 @@ function assemble_colors(level) {
     }
 
     if (level === 2) {
-        const red_num = generate_rand_num(1, 20);
-        const green_num = generate_rand_num(1, 20);
-        const blue_num = generate_rand_num(1, 20);
+        const red_num = generate_rand_num(1, 10);
+        const green_num = generate_rand_num(1, 10);
+        const blue_num = generate_rand_num(1, 10);
 
         promises = [
             getColor('red', red_num),
@@ -106,9 +106,9 @@ function assemble_colors(level) {
     }
 
     if (level === 3) {
-        const red_num = generate_rand_num(21, 50);
-        const green_num = generate_rand_num(21, 50);
-        const blue_num = generate_rand_num(21, 50);
+        const red_num = generate_rand_num(11, 40);
+        const green_num = generate_rand_num(11, 40);
+        const blue_num = generate_rand_num(11, 40);
 
         promises = [
             getColor('red', red_num),
@@ -118,9 +118,9 @@ function assemble_colors(level) {
     }
 
     if (level === 4) {
-        const red_num = generate_rand_num(51, 100);
-        const green_num = generate_rand_num(51, 100);
-        const blue_num = generate_rand_num(51, 100);
+        const red_num = generate_rand_num(41, 80);
+        const green_num = generate_rand_num(41, 80);
+        const blue_num = generate_rand_num(41, 80);
 
         promises = [
             getColor('red', red_num),
@@ -130,9 +130,9 @@ function assemble_colors(level) {
     }
 
     if (level === 5) {
-        const red_num = generate_rand_num(100, 140);
-        const green_num = generate_rand_num(100, 140);
-        const blue_num = generate_rand_num(100, 140);
+        const red_num = generate_rand_num(81, 140);
+        const green_num = generate_rand_num(81, 140);
+        const blue_num = generate_rand_num(81, 140);
 
         promises = [
             getColor('red', red_num),
@@ -142,31 +142,27 @@ function assemble_colors(level) {
     }
 
     if (level === 6) {
-        const red_num = generate_rand_num(100, 140);
-        const green_num = generate_rand_num(100, 140);
-        const blue_num = generate_rand_num(100, 140);
+        const num = generate_rand_num(10, 20);
 
         promises = [
-            getColor('blue', red_num),
-            getColor('blue', green_num),
-            getColor('blue', blue_num)
+            getColor('blue', num),
+            getColor('blue', num + 2),
+            getColor('blue', num + 4)
         ];
     }
 
     if (level === 7) {
-        const red_num = generate_rand_num(100, 105);
-        const green_num = generate_rand_num(100, 105);
-        const blue_num = generate_rand_num(100, 105);
+        const num = generate_rand_num(10, 20);
 
         promises = [
-            getColor('red', red_num),
-            getColor('red', green_num),
-            getColor('red', blue_num)
+            getColor('red', num),
+            getColor('red', num + 1),
+            getColor('red', num + 2)
         ];
     }
 
     if (level === 8) {
-        const num = generate_rand_num(10, 15);
+        const num = generate_rand_num(50, 100);
 
         promises = [
             getColor('green', num),
@@ -176,7 +172,7 @@ function assemble_colors(level) {
     }
 
     if (level === 9) {
-        const num = generate_rand_num(10, 15);
+        const num = generate_rand_num(50, 100);
 
         promises = [
             getColor('blue', num),
@@ -186,7 +182,7 @@ function assemble_colors(level) {
     }
 
     if (level === 10) {
-        const num = generate_rand_num(10, 15);
+        const num = generate_rand_num(50, 100);
 
         promises = [
             getColor('red', num),
@@ -204,11 +200,12 @@ function assemble_colors(level) {
 function set_game_level(level) {
     if (level > 10) {
         alert('You have completed the game!');
-        document.getElementById('color-name').textContent = 'Thanks for playing! Refresh to start again.';
+        document.getElementById('color-name').textContent = 'You Won! Thanks for playing! Refresh to start again.';
         //Show an image of the color wheel
         const img = document.createElement('img');
         img.src = './images/colors_3d_graph.png';
         img.style.width = '100%';
+        img.style.margin = '0 auto'; // Center horizontally
         container.appendChild(img);        
         return;
     }

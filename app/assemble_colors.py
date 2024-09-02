@@ -171,11 +171,12 @@ def color_difference(color1, color2):
 
 # Create 3d graph of the colors in rgb space
 
-fig = plt.figure()
+fig = plt.figure(facecolor='whitesmoke')
 ax = fig.add_subplot(111, projection='3d')
 
 for color, rgb in html_colors.items():
     ax.scatter(rgb[0], rgb[1], rgb[2], color=color)
+    ax.plot([rgb[0], rgb[0]], [rgb[1], rgb[1]], [0, rgb[2]], color=color)  # Set major axes color
 
 ax.set_xlabel('Red')
 ax.set_ylabel('Green')
@@ -184,6 +185,8 @@ ax.set_zlabel('Blue')
 ax.set_title('Cast of characters')
 
 ax.view_init(elev=45, azim=-45)  # Adjust the elevation and azimuth angles
+
+ax.grid(False)
 
 plt.show()
 
