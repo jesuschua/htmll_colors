@@ -234,14 +234,176 @@ function set_game_level(level) {
     currentLevel = level; // Track the current level
     
     if (level > 10) {
-        alert('You have completed the game!');
-        document.getElementById('color-name').textContent = 'You Won! Thanks for playing! Refresh to start again.';
-        //Show an image of the color wheel
-        const img = document.createElement('img');
-        img.src = './images/colors_3d_graph.png';
-        img.style.width = '100%';
-        img.style.margin = '0 auto'; // Center horizontally
-        container.appendChild(img);        
+        // Clear previous content
+        container.innerHTML = '';
+        
+        // Create celebration container
+        const celebrationContainer = document.createElement('div');
+        celebrationContainer.className = 'celebration-container';
+        container.appendChild(celebrationContainer);
+        
+        // Update message
+        document.getElementById('color-name').textContent = 'You Won! Master of HTML Colors!';
+        document.getElementById('color-name').className = 'winner-text pulse';
+        
+        // Create confetti and color cascade
+        const colors = [
+            "Red", "Blue", "Green", "Yellow", "Purple", "Cyan", "Magenta", "Orange",
+            "Pink", "Lime", "Teal", "Indigo", "Violet", "Gold", "Coral", "Turquoise"
+        ];
+        
+        // Add confetti elements
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 5 + 's';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            celebrationContainer.appendChild(confetti);
+        }
+        
+        // Create color showcase
+        const colorShowcase = document.createElement('div');
+        colorShowcase.className = 'color-showcase';
+        container.appendChild(colorShowcase);
+        
+        // Get all HTML named colors from our reference
+        const allHTMLColors = [
+            "AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", 
+            "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue", 
+            "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", 
+            "DarkBlue", "DarkCyan", "DarkGoldenRod", "DarkGray", "DarkGreen", "DarkKhaki", 
+            "DarkMagenta", "DarkOliveGreen", "DarkOrange", "DarkOrchid", "DarkRed", "DarkSalmon", 
+            "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkTurquoise", "DarkViolet", 
+            "DeepPink", "DeepSkyBlue", "DimGray", "DodgerBlue", "FireBrick", "FloralWhite", 
+            "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "GoldenRod", "Gray", 
+            "Green", "GreenYellow", "HoneyDew", "HotPink", "IndianRed", "Indigo", "Ivory", 
+            "Khaki", "Lavender", "LavenderBlush", "LawnGreen", "LemonChiffon", "LightBlue", 
+            "LightCoral", "LightCyan", "LightGoldenRodYellow", "LightGray", "LightGreen", 
+            "LightPink", "LightSalmon", "LightSeaGreen", "LightSkyBlue", "LightSlateGray", 
+            "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", 
+            "MediumAquaMarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", 
+            "MediumSlateBlue", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", 
+            "MidnightBlue", "MintCream", "MistyRose", "Moccasin", "NavajoWhite", "Navy", 
+            "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenRod", 
+            "PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", 
+            "Pink", "Plum", "PowderBlue", "Purple", "RebeccaPurple", "Red", "RosyBrown", 
+            "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", 
+            "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "Snow", "SpringGreen", 
+            "SteelBlue", "Tan", "Teal", "Thistle", "Tomato", "Turquoise", "Violet", "Wheat", 
+            "White", "WhiteSmoke", "Yellow", "YellowGreen"
+        ];
+        
+        // Create a color grid that will display colors in waves
+        allHTMLColors.forEach((color, index) => {
+            const colorBox = document.createElement('div');
+            colorBox.className = 'color-box';
+            colorBox.style.backgroundColor = color;
+            colorBox.style.animationDelay = (index * 0.03) + 's';
+            
+            // Add tooltip with color name
+            colorBox.setAttribute('title', color);
+            
+            // Add click behavior to show color name
+            colorBox.addEventListener('click', () => {
+                document.getElementById('color-name').textContent = color;
+                colorBox.classList.add('pulse');
+                setTimeout(() => colorBox.classList.remove('pulse'), 500);
+            });
+            
+            colorShowcase.appendChild(colorBox);
+        });
+        
+        // Add play again button
+        const playAgainBtn = document.createElement('button');
+        playAgainBtn.textContent = 'Play Again';
+        playAgainBtn.className = 'play-again-btn';
+        playAgainBtn.addEventListener('click', () => resetLevel());
+        container.appendChild(playAgainBtn);
+        
+        // Add CSS for the animations
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            .celebration-container {
+                position: relative;
+                height: 200px;
+                overflow: hidden;
+                margin-bottom: 20px;
+            }
+            
+            .confetti {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                top: -10px;
+                opacity: 0;
+                border-radius: 50%;
+                animation: confetti-fall 3s ease-in-out forwards;
+            }
+            
+            @keyframes confetti-fall {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
+            }
+            
+            .winner-text {
+                font-size: 24px;
+                color: #3498db;
+                margin: 20px 0;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .color-showcase {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+                margin: 20px 0;
+            }
+            
+            .color-box {
+                width: 24px;
+                height: 24px;
+                border-radius: 4px;
+                transform: scale(0);
+                animation: color-appear 0.5s ease forwards;
+                cursor: pointer;
+                transition: transform 0.2s;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .color-box:hover {
+                transform: scale(1.2) !important;
+                z-index: 10;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            
+            @keyframes color-appear {
+                0% { transform: scale(0) rotate(180deg); }
+                60% { transform: scale(1.2) rotate(0deg); }
+                100% { transform: scale(1) rotate(0deg); }
+            }
+            
+            .play-again-btn {
+                background-color: #3498db;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin: 20px 0;
+                transition: all 0.3s;
+            }
+            
+            .play-again-btn:hover {
+                background-color: #2980b9;
+                transform: scale(1.05);
+            }
+        `;
+        document.head.appendChild(styleSheet);
+        
         return;
     }
 
