@@ -1,11 +1,14 @@
 const container = document.getElementById('color-container');
+let currentLevel = 1; // Add at the top of script.js to track current level
+
 // import json_file from './sorted_via_absolute_red.json';
 
+// Update the loadJSON function to look in the correct directory
 function loadJSON(callback, color_family) {   
     var xobj = new XMLHttpRequest();
-        xobj.overrideMimeType("application/json");
-    var filename = './sorted_via_absolute_'+ color_family +'.json';
-    // console.log(filename);
+    xobj.overrideMimeType("application/json");
+    // Update path to use color_lists directory
+    var filename = './color_lists/sorted_via_absolute_'+ color_family +'.json';
     xobj.open('GET', filename, true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
@@ -197,7 +200,39 @@ function assemble_colors(level) {
     });
 }
 
+// Update this function to add CSS classes to your color options
+function createColorOption(color) {
+    const div = document.createElement('div');
+    div.className = 'color-option';
+    div.style.backgroundColor = color;
+    return div;
+}
+
+// Add visual feedback when selecting a color
+function handleColorSelection(isCorrect) {
+    const message = document.getElementById('message');
+    
+    if (isCorrect) {
+        message.className = 'success';
+        message.textContent = 'Correct! Great job!';
+    } else {
+        message.className = 'error';
+        message.textContent = 'Incorrect! Try again.';
+    }
+    
+    // Update progress bar when level changes
+    updateProgressBar(currentLevel);
+    
+    // Add pulse animation to color name
+    const colorName = document.getElementById('color-name');
+    colorName.classList.add('pulse');
+    setTimeout(() => colorName.classList.remove('pulse'), 500);
+}
+
+// Modify the set_game_level function to update currentLevel
 function set_game_level(level) {
+    currentLevel = level; // Track the current level
+    
     if (level > 10) {
         alert('You have completed the game!');
         document.getElementById('color-name').textContent = 'You Won! Thanks for playing! Refresh to start again.';
@@ -241,19 +276,35 @@ function set_game_level(level) {
     });
 }
 
-function nextLevel () {
+// // Update the challenge level display
+// const challengeLevel = document.getElementById('challenge-level');
+// challengeLevel.textContent = `Level ${level} of 10`;
+    
+// // Update the progress bar
+// updateProgressBar(level);
+
+function nextLevel() {
     // clear the color container
     container.innerHTML = '';
     const levelElement = document.getElementById('challenge-level');
     const level = parseInt(levelElement.textContent.split(' ')[2]);
-    set_game_level(level + 1);
+    const newLevel = level + 1;
+    
+    // Update progress bar when advancing to next level
+    updateProgressBar(newLevel);
+    
+    set_game_level(newLevel);
 }
 
-function resetLevel () {
+function resetLevel() {
     // clear the color container
     container.innerHTML = '';
     const levelElement = document.getElementById('challenge-level');
     levelElement.textContent = "Challenge level: " + 1;
+    
+    // Reset progress bar to level 1
+    updateProgressBar(1);
+    
     set_game_level(1);
 }
 

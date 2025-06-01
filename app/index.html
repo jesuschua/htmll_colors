@@ -3,21 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Named Colors</title>
+    <title>HTML Named Colors Game</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="game-container">
+        <h1>HTML Color Master</h1>
+        <div id="challenge-level">Level 1</div>
+        <div id="color-name">Loading...</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 10%;"></div>
+        </div>
+        
+        <div id="color-container"></div>
+        <div id="message"></div>
+    </div>
+    
+    <footer>
+        Test your knowledge of HTML's named colors!
+    </footer>
+    
     <script>
         // Automatically start the game
         window.addEventListener('DOMContentLoaded', function() {
             set_game_level(1);
+            updateProgressBar(1);
         });
+        
+        // Add this function to your script.js file
+        function updateProgressBar(level) {
+            const progressPercentage = (level / 10) * 100;
+            document.querySelector('.progress-bar').style.width = progressPercentage + '%';
+        }
     </script>
-    <H1>How well do you know the named HTML colors?</H1>
-    <div id="message"></div> 
-    <div id="challenge-level"></div>
-    <div id="color-name"></div>
-    <div id="color-container"></div>
     <script src="script.js"></script>
 </body>
 </html>
