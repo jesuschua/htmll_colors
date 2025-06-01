@@ -52,10 +52,26 @@ h1::after {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background: var(--primary);
+  width: 300px;
+  height: 5px;
+  background: linear-gradient(
+    to right,
+    #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, 
+    #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, 
+    #ff00ff, #ff0080, #ff0000
+  );
+  background-size: 1000% 100%;
   border-radius: 2px;
+  animation: rainbow-move 15s linear infinite;
+}
+
+@keyframes rainbow-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 #challenge-level {
