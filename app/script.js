@@ -268,8 +268,34 @@ function set_game_level(level) {
                 if (colors[index] === randomColor) {
                     nextLevel();
                 } else {
-                    alert('Incorrect! Restarting level...');
-                    resetLevel();
+                    // Show all color names temporarily
+                    swatchElements.forEach((s, i) => {
+                        // Store original text
+                        const originalText = s.textContent;
+                        
+                        // Mark the correct one
+                        if (colors[i] === randomColor) {
+                            s.textContent = colors[i] + " ✓";
+                            s.style.border = "3px solid #2ecc71";
+                        } else {
+                            s.textContent = colors[i];
+                        }
+                        
+                        // Add a visual indicator for the one they clicked
+                        if (s === swatch) {
+                            s.style.border = "3px solid #e74c3c";
+                        }
+                    });
+                    
+                    // Update message
+                    const message = document.getElementById('message');
+                    message.className = 'error';
+                    message.textContent = 'Incorrect! The correct color was ' + randomColor;
+                    
+                    // Delay before resetting
+                    setTimeout(() => {
+                        resetLevel();
+                    }, 2500); // Show for 2.5 seconds before resetting
                 }
             });
         });
@@ -299,6 +325,12 @@ function nextLevel() {
 function resetLevel() {
     // clear the color container
     container.innerHTML = '';
+    
+    // Clear the error message
+    const message = document.getElementById('message');
+    message.textContent = '';
+    message.className = ''; // Remove any classes (error/success)
+    
     const levelElement = document.getElementById('challenge-level');
     levelElement.textContent = "Challenge level: " + 1;
     
