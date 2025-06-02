@@ -92,7 +92,7 @@ h1::after {
   margin: 1rem 0;
   color: var(--dark);
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 #color-container {
